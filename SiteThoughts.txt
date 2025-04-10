@@ -1,0 +1,50 @@
+# C# Classes for CSV Parsing Application
+
+This document outlines a potential class structure for a C# application that parses a .CSV file and breaks it down into common transactions. The goal is to create a well-structured and maintainable design.
+
+## Proposed Classes:
+
+1.  **CSVParser.cs:**
+    * **Responsibility:** Reads the .CSV file from the specified path.
+    * **Functionality:** Parses the raw CSV data into a more structured format, likely a `List<string[]>` (where each inner string array represents a row) or a `List<Dictionary<string, string>>` (where each dictionary represents a row with column headers as keys). You might also consider creating a custom object to represent a raw CSV record.
+
+2.  **Transaction.cs:**
+    * **Responsibility:** Represents a single, common transaction extracted from a parsed CSV row.
+    * **Properties:** Contains properties common to all transaction types, such as:
+        * `DateTime Date { get; set; }`
+        * `decimal Amount { get; set; }`
+        * `string Description { get; set; }`
+        * Potentially other common fields like `string ReferenceNumber`, etc.
+
+3.  **TransactionCategorizer.cs:**
+    * **Responsibility:** Analyzes a `Transaction` object to determine its specific type or category based on its properties (primarily the `Description`).
+    * **Functionality:** Implements logic (e.g., using keywords, regular expressions, or more advanced AI if integrated) to assign a category to each transaction (e.g., "Grocery", "Payment", "Withdrawal", "Deposit").
+    * **Output:** Could add a `Category` property to the `Transaction` object or return a separate category identifier.
+
+4.  **TransactionProcessor.cs (or specific transaction type classes):**
+    * **Option A (Single Processor):**
+        * **Responsibility:** Handles further processing of categorized `Transaction` objects.
+        * **Functionality:** Contains logic that might be common across different transaction types. Specific actions based on the category might be handled within this class using conditional statements or a strategy pattern.
+    * **Option B (Specific Type Classes - e.g., GroceryTransaction.cs, PaymentTransaction.cs):**
+        * **Responsibility:** Each class represents and handles processing specific transaction types.
+        * **Inheritance:** These classes would likely inherit from the base `Transaction` class or implement a common `ITransactionProcessor` interface.
+        * **Functionality:** Contains logic unique to how each transaction type is processed. This approach is beneficial for more complex or distinct processing requirements for different categories.
+
+5.  **ReportGenerator.cs (Optional but Recommended):**
+    * **Responsibility:** Generates summaries, reports, or visualizations based on the processed transactions.
+    * **Functionality:** Contains methods to calculate totals, group transactions by category, create output in various formats (text, CSV, etc.).
+
+## Considerations:
+
+* The exact number of classes might vary based on the complexity of your categorization and processing logic.
+* Starting with a smaller number of classes and refactoring later if needed is a good approach.
+* Consider using interfaces to define contracts between classes, improving flexibility and testability.
+
+## How to Save:
+
+1.  **Copy the entire text block above.**
+2.  **Open a plain text editor** (like Notepad on Windows, TextEdit on macOS, or a similar application).
+3.  **Paste the copied text into the editor.**
+4.  **Save the file** with a descriptive name, such as `CSharpClassStructure.txt` or `CSharpClassStructure.md` (if you want to preserve the Markdown formatting).
+
+This will give you a local file containing the outlined thoughts on your C# project's class structure.
