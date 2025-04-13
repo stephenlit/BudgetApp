@@ -1,4 +1,5 @@
 ﻿using ClassLibrary1;
+using ConsoleTables;
 
 namespace BudgetApp
 {
@@ -15,28 +16,28 @@ namespace BudgetApp
 
             // Initialize the TransactionCategorizer and categorize the transactions
             var categorizer = new TransactionCategorizer(transactions);
-            var categorizedTransactions = categorizer.CategorizeTransactions();
-
-            // Display the categorized transactions
-            Console.WriteLine("Categorized Transactions:");
-            foreach (var category in categorizedTransactions)
+            var groupedTransactions = categorizer.GroupTransactions();
+            // Display the grouped transactions in a table format
+            var table = new ConsoleTable("Sub-description", "Total Amount");
+            foreach (var transaction in groupedTransactions)
             {
-                Console.WriteLine($"Category: {category.Key}");
-                foreach (var transaction in category.Value)
-                {
-                    Console.WriteLine($"  - {transaction.Description} | Amount: {transaction.Amount}");
-                }
+                table.AddRow(transaction.SubDescription, transaction.Amount);
             }
-
-            // Display the parsed transactions
-            foreach (var transaction in transactions)
-            {
-                Console.WriteLine($"Date: {transaction.Date.ToShortDateString()} | Description: {transaction.Description} | Sub Description: {transaction.SubDescription} | Amount: {transaction.Amount:C}");
-            }
-            Console.ReadKey();
+            table.Write(Format.Alternative);
+            Console.WriteLine();
+            // Display the total amount of all transactions
+            var totalAmount = transactions.Sum(t => decimal.Parse(t.Amount ?? "0"));
+            Console.WriteLine($"Total Amount: {totalAmount:C}");
+            // Display the total number of transactions
+            var totalTransactions = transactions.Count;
+            Console.WriteLine($"Total Transactions: {totalTransactions}");
+            // Display the average amount of transactions
+            var averageAmount = totalTransactions > 0 ? totalAmount / totalTransactions : 0;
+            Console.WriteLine($"Average Amount: {averageAmount:C}");
+            // Display the highest transaction amount
+            var highestTransaction = transactions.Max(t => decimal.Parse(t.Amount ?? "0"));
+            Console.WriteLine($"Highest Transaction: {highestTransaction:C}");
         }
-
     }
-    // Note: Make sure to handle exceptions and errors in a real-world application. This is a basic example.
-    // You might want to add error handling for file not found, parsing errors, etc.
 }
+
