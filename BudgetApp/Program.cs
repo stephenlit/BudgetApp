@@ -13,6 +13,21 @@ namespace BudgetApp
             var parser = new CSVParser();
             var transactions = parser.ParseCSV(filePath);
 
+            // Initialize the TransactionCategorizer and categorize the transactions
+            var categorizer = new TransactionCategorizer(transactions);
+            var categorizedTransactions = categorizer.CategorizeTransactions();
+
+            // Display the categorized transactions
+            Console.WriteLine("Categorized Transactions:");
+            foreach (var category in categorizedTransactions)
+            {
+                Console.WriteLine($"Category: {category.Key}");
+                foreach (var transaction in category.Value)
+                {
+                    Console.WriteLine($"  - {transaction.Description} | Amount: {transaction.Amount}");
+                }
+            }
+
             // Display the parsed transactions
             foreach (var transaction in transactions)
             {
@@ -20,7 +35,7 @@ namespace BudgetApp
             }
             Console.ReadKey();
         }
-        
+
     }
     // Note: Make sure to handle exceptions and errors in a real-world application. This is a basic example.
     // You might want to add error handling for file not found, parsing errors, etc.
