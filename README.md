@@ -1,3 +1,17 @@
+# BudgetApp
+
+BudgetApp is a console-based application designed to help users manage and analyze their financial transactions. It allows users to parse CSV files containing transaction data and provides various options to view, categorize, and filter the transactions.
+
+## Features
+
+- Parse CSV files containing transaction data.
+- Display all transactions in a tabular format.
+- Group transactions by category and calculate totals.
+- (Planned) Filter transactions by date, amount, or description.
+
+## Installation
+
+1. Clone the repository:
 2. Open the solution in Visual Studio 2022.
 3. Build the project to restore dependencies.
 
