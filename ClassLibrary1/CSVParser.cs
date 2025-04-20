@@ -8,7 +8,7 @@ namespace ClassLibrary1
     {
         string filePath = string.Empty;
 
-        public List<Transaction> ParseCSV(string filePath)
+        public List<Transaction> ParseCSV()
         {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
