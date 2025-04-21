@@ -17,20 +17,16 @@ namespace ClassLibrary1
         public void ShowAll(List<Transaction> transactions)
         {
             _transactions = new List<Transaction>(transactions);
-
-
-            if (_transactions == null || _transactions.Count == 0)
-            {
-                Console.WriteLine("No transactions to display.");
-                return;
-            }
-
             RenderTable(_transactions);
         }
 
-
         private void RenderTable(IEnumerable<Transaction> transactions)
         {
+            if (transactions == null) // Ensure _transactions is not null before iterating
+            {
+                Console.WriteLine("No transactions to render.");
+                return;
+            }
 
             var table = new Table();
 
@@ -40,10 +36,8 @@ namespace ClassLibrary1
             table.AddColumn("Amount");
             table.AddColumn("Category");
 
-            foreach (var transaction in _transactions)
-
+            foreach (var transaction in transactions)
             {
-
                 // Add each transaction to the table
                 table.AddRow(transaction.Date.ToShortDateString(),
                              $"[yellow]{Markup.Escape(transaction.Description ?? "No Description")}[/]", // Handle null description
@@ -56,7 +50,6 @@ namespace ClassLibrary1
             // Render the table to the console
             AnsiConsole.Write(table);
         }
-        
     }
 
 }
