@@ -4,12 +4,13 @@ using System.Globalization;
 
 namespace ClassLibrary1
 {
-    public class CSVParser
+    public  class CSVParser
     {
-        string filePath = string.Empty;
+        //string filePath = string.Empty;
 
-        public List<Transaction> ParseCSV()
+        public static List<Transaction> ParseCSV()
         {
+            string filePath = string.Empty; 
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 Delimiter = ",",
