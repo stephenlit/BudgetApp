@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace ClassLibrary1
 {
-   sealed public  class CSVParser
+   sealed public class CSVParser
     {
         //string filePath = string.Empty;
 

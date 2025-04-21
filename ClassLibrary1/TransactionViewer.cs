@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ConsoleTables;
 using Spectre.Console;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 
 namespace ClassLibrary1
 {
@@ -15,14 +16,21 @@ namespace ClassLibrary1
 
         public void ShowAll(List<Transaction> transactions)
         {
-             _transactions = new List<Transaction>(transactions);
+            _transactions = new List<Transaction>(transactions);
 
 
-            if (transactions == null || transactions.Count == 0)
+            if (_transactions == null || _transactions.Count == 0)
             {
                 Console.WriteLine("No transactions to display.");
                 return;
             }
+
+            RenderTable(_transactions);
+        }
+
+
+        private void RenderTable(IEnumerable<Transaction> transactions)
+        {
 
             var table = new Table();
 
@@ -32,7 +40,8 @@ namespace ClassLibrary1
             table.AddColumn("Amount");
             table.AddColumn("Category");
 
-            foreach (var transaction in transactions)
+            foreach (var transaction in _transactions)
+
             {
 
                 // Add each transaction to the table
@@ -47,6 +56,7 @@ namespace ClassLibrary1
             // Render the table to the console
             AnsiConsole.Write(table);
         }
+        
     }
 
 }
