@@ -4,34 +4,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ConsoleTables;
+using Spectre.Console;
+using System.Globalization;
 
 namespace ClassLibrary1
 {
-    public class TransactionViewer
+    sealed public class TransactionViewer
     {
+        private List<Transaction>? _transactions;
+
         public void ShowAll(List<Transaction> transactions)
         {
+             _transactions = new List<Transaction>(transactions);
+
+
             if (transactions == null || transactions.Count == 0)
             {
                 Console.WriteLine("No transactions to display.");
                 return;
             }
 
-            // Create a table with column names: Date, Description, Amount, Category
-            var table = new ConsoleTable("Date", "Description", "Amount", "Category");
+            var table = new Table();
+
+            // Add some columns
+            table.AddColumn("Date");
+            table.AddColumn(new TableColumn("[green]Description[/]").Centered());
+            table.AddColumn("Amount");
+            table.AddColumn("Category");
 
             foreach (var transaction in transactions)
             {
-                // Make sure each transaction is added correctly to the table
-                table.AddRow(transaction.Date.ToShortDateString(),
-                             transaction.Description,
-                             transaction.Amount,
-                             transaction.SubDescription ?? "Uncategorized"); // Handle null category if applicable
 
+                // Add each transaction to the table
+                table.AddRow(transaction.Date.ToShortDateString(),
+                             $"[yellow]{Markup.Escape(transaction.Description ?? "No Description")}[/]", // Handle null description
+                             decimal.TryParse(transaction.Amount, out var amount)
+                                ? amount.ToString("C", CultureInfo.CurrentCulture)
+                                : "Invalid Amount", // Safely parse and format amount
+                             transaction.SubDescription ?? "Uncategorized"); // Handle null category
             }
 
-            // Write the table to the console
-            table.Write(Format.Default);
+            // Render the table to the console
+            AnsiConsole.Write(table);
         }
     }
 

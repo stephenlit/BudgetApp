@@ -4,11 +4,11 @@ using System.Globalization;
 
 namespace ClassLibrary1
 {
-    public  class CSVParser
+   sealed public  class CSVParser
     {
         //string filePath = string.Empty;
 
-        public static List<Transaction> ParseCSV()
+        public  List<Transaction> ParseCSV()
         {
             string filePath = string.Empty; 
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
@@ -22,6 +22,7 @@ namespace ClassLibrary1
             Console.WriteLine("Drag and drop file or enter file path:");
             string? inputFilePath = Console.ReadLine();
 
+
             if (string.IsNullOrWhiteSpace(inputFilePath))
             {
                 throw new ArgumentException("File path cannot be null or empty.");
@@ -29,13 +30,13 @@ namespace ClassLibrary1
 
             filePath = inputFilePath.Trim();
 
-            using (var reader = new StreamReader(filePath))
-            using (var csv = new CsvReader(reader, config))
-            {
+            using var reader = new StreamReader(filePath);
+            using var csv = new CsvReader(reader, config);
+            
                 // Read the CSV file and map it to the Transaction class
                 var records = csv.GetRecords<Transaction>().ToList();
                 return records;
-            }
+            
         }
     }
 }
