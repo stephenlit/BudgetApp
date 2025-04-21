@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -57,21 +58,29 @@ namespace BudgetApp
                         break;
 
                     case "2":
-                        if (transactions != null)
+                        if (transactions != null && transactions.Any())
                         {
-                            Dictionary<string, decimal> groupedAndTotaled = TransactionCategorizer.CategorizeTransactions(transactions);
+                            var categorizer = new TransactionCategorizer(transactions);
+                            var groupedAndTotaled = categorizer.Categorize();
 
                             Console.WriteLine("Grouped Transaction Totals from CSV File:");
                             var table = new ConsoleTable("Sub-Description", "Total Amount");
+
                             foreach (var item in groupedAndTotaled)
                             {
-                                table.AddRow(item.Key, item.Value);
+                                table.AddRow(item.Key, item.Value.ToString("C", CultureInfo.CurrentCulture));
                             }
+
                             table.Write(Format.Default);
-                            Console.WriteLine();
                         }
+                        else
+                        {
+                            Console.WriteLine("No transactions available to categorize.");
+                        }
+
                         Console.WriteLine("\nPress any key to return to the menu...");
                         Console.ReadLine();
+                        Console.Clear();
                         break;
 
                     case "3":
