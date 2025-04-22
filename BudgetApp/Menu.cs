@@ -38,49 +38,18 @@ namespace BudgetApp
                     Console.ReadKey();
                     continue;
                 }
+                var transactionService = new TransactionService();
 
                 switch (input)
                 {
                     case "1":
-                        Console.WriteLine(transactions.Count);
-                        if (transactions == null || transactions.Count == 0)
-                        {
-                            Console.WriteLine("No transactions available to display.");
-                        }
-                        else
-                        {
-                            var viewer = new TransactionViewer();
-                            viewer.ShowAll(transactions);
-                        }
 
-                        Console.WriteLine("\nPress any key to return to the menu...");
-                        Console.ReadKey();
+                        transactionService.DisplayTransactions(transactions);
                         break;
 
                     case "2":
-                        if (transactions != null && transactions.Any())
-                        {
-                            var categorizer = new TransactionCategorizer(transactions);
-                            var groupedAndTotaled = categorizer.Categorize();
 
-                            Console.WriteLine("Grouped Transaction Totals from CSV File:");
-                            var table = new ConsoleTable("Sub-Description", "Total Amount");
-
-                            foreach (var item in groupedAndTotaled)
-                            {
-                                table.AddRow(item.Key, item.Value.ToString("C", CultureInfo.CurrentCulture));
-                            }
-
-                            table.Write(Format.Default);
-                        }
-                        else
-                        {
-                            Console.WriteLine("No transactions available to categorize.");
-                        }
-
-                        Console.WriteLine("\nPress any key to return to the menu...");
-                        Console.ReadLine();
-                        Console.Clear();
+                        transactionService.CategorizeTransactions(transactions);
                         break;
 
                     case "3":
